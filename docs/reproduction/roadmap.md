@@ -1,14 +1,14 @@
 # Z-Image Reproduction Roadmap
 
 > 原则：一次只推进一个阶段；每阶段有明确出口条件（exit criteria）；未满足出口条件不得进入下一阶段。
-> 每阶段产出的模块必须"先测试后训练"（见 `.opencode/skills/module-development/SKILL.md`）。
-> 实验记录规范见 `.opencode/skills/experiment-protocol/SKILL.md`。
+> 每阶段产出的模块必须"先测试后训练"（见 `.pi/skills/module-development/SKILL.md`）。
+> 实验记录规范见 `.pi/skills/experiment-protocol/SKILL.md`。
 
 ## Stage 0 — 基础设施（当前阶段）
 
 - [x] 检查 repository（uv 项目、Python 3.13、torch 2.14+cu130、diffusers 0.40 含 ZImagePipeline）
 - [x] AGENTS.md（规范、标签系统、硬规则）
-- [x] `.opencode/skills/`（paper-facts / experiment-protocol / module-development）
+- [x] `.pi/skills/`（paper-facts / experiment-protocol / module-development）
 - [x] `docs/reproduction/`（paper-facts、reproduction_matrix、roadmap）
 - [x] 确认论文与官方代码来源并建立事实库
 - [ ] **待决**：在本目录初始化独立 git 仓库（父目录 `~/learn` 已是 git repo，嵌套仓库才能做 per-experiment commit 记录）

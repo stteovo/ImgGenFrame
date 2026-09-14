@@ -291,7 +291,7 @@ docs/reproduction/open_questions.md
 
 ```text
 AGENTS.md
-.opencode/skills/
+.pi/skills/
 docs/reproduction/
 docs/experiments/
 src/
