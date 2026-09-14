@@ -1,6 +1,6 @@
 ---
 name: rope-3d
-description: Implementation and review of the 3D Unified RoPE used by Z-Image (paper §4.1: image tokens on spatial axes, text tokens on temporal axis; official constants ROPE_THETA=256, axes dims (32,48,48), axes lens (1536,512,512)). Use when implementing RoPE, position encoding, or editing-task temporal offsets.
+description: "Implementation and review of the 3D Unified RoPE used by Z-Image (paper §4.1: image tokens on spatial axes, text tokens on temporal axis; official constants ROPE_THETA=256, axes dims (32,48,48), axes lens (1536,512,512)). Use when implementing RoPE, position encoding, or editing-task temporal offsets."
 ---
 
 # 3D Unified RoPE

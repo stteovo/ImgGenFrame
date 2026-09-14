@@ -1,6 +1,6 @@
 ---
 name: data-infrastructure
-description: Mini-scale reproduction of Z-Image's four-module data infrastructure (paper §2: Data Profiling Engine, Cross-modal Vector Engine, World Knowledge Topological Graph, Active Curation Engine) for the reproduction codebase. Use when building the data engine, filtering rules, curation loops, or the Z-Image-Turbo data pipeline for small-scale training.
+description: "Mini-scale reproduction of Z-Image's four-module data infrastructure (paper §2: Data Profiling Engine, Cross-modal Vector Engine, World Knowledge Topological Graph, Active Curation Engine) for the reproduction codebase. Use when building the data engine, filtering rules, curation loops, or the Z-Image-Turbo data pipeline for small-scale training."
 ---
 
 # Data Infrastructure（数据基础设施 mini 复现）

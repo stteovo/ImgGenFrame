@@ -1,6 +1,6 @@
 ---
 name: module-development
-description: Test-first module development workflow for the Z-Image reproduction codebase. Use when implementing or reviewing any core module (RoPE, norms, adaLN, S3-DiT blocks, flow matching, samplers, data pipeline) — enforces pytest-first, numerical parity with official implementations, scale-ladder gating, and the mentor seven-question review. Trigger words: implement module, write tests, RoPE, adaLN, DiT block, trainer, sampler.
+description: "Test-first module development workflow for the Z-Image reproduction codebase. Use when implementing or reviewing any core module (RoPE, norms, adaLN, S3-DiT blocks, flow matching, samplers, data pipeline) — enforces pytest-first, numerical parity with official implementations, scale-ladder gating, and the mentor seven-question review. Trigger words: implement module, write tests, RoPE, adaLN, DiT block, trainer, sampler."
 ---
 
 # Module Development Workflow

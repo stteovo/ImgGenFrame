@@ -1,6 +1,6 @@
 ---
 name: experiment-protocol
-description: Reproducible experiment record protocol for Z-Image reproduction. Use when running any training run, benchmark, ablation, probing script, or inference baseline — covers experiments/&lt;date&gt;-&lt;slug&gt;/ layout, seeds, environment capture, metrics, samples. Trigger words: experiment, training run, record, reproducibility, ablation, baseline.
+description: "Reproducible experiment record protocol for Z-Image reproduction. Use when running any training run, benchmark, ablation, probing script, or inference baseline — covers experiments/&lt;date&gt;-&lt;slug&gt;/ layout, seeds, environment capture, metrics, samples. Trigger words: experiment, training run, record, reproducibility, ablation, baseline."
 ---
 
 # Experiment Protocol

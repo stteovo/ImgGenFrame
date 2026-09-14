@@ -1,6 +1,6 @@
 ---
 name: flow-matching
-description: Implementation and review of Z-Image's flow matching training objective and sampling (paper §4.3 eq.1: x_t = t·x1 + (1−t)·x0, velocity target v = x1 − x0, MSE; logit-normal timestep sampling; Flux-style dynamic time shifting with official shift constants). Use when implementing the FM loss, noise scheduling, t sampling, or Euler samplers.
+description: "Implementation and review of Z-Image's flow matching training objective and sampling (paper §4.3 eq.1: x_t = t·x1 + (1−t)·x0, velocity target v = x1 − x0, MSE; logit-normal timestep sampling; Flux-style dynamic time shifting with official shift constants). Use when implementing the FM loss, noise scheduling, t sampling, or Euler samplers."
 ---
 
 # Flow Matching（训练目标与采样）

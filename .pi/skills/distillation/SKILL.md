@@ -1,6 +1,6 @@
 ---
 name: distillation
-description: Study and (mini-scale) reproduction of Z-Image's few-step distillation stack — Decoupled DMD (arXiv 2511.22677: CFG-Augmentation as engine, Distribution Matching as regularizer, decoupled renoising schedules) and DMDR (arXiv 2511.13649: DMD meets RL), plus RLHF DPO/GRPO stages (paper §4.6). Use when studying these papers or attempting mini distillation/RL experiments.
+description: "Study and (mini-scale) reproduction of Z-Image's few-step distillation stack — Decoupled DMD (arXiv 2511.22677: CFG-Augmentation as engine, Distribution Matching as regularizer, decoupled renoising schedules) and DMDR (arXiv 2511.13649: DMD meets RL), plus RLHF DPO/GRPO stages (paper §4.6). Use when studying these papers or attempting mini distillation/RL experiments."
 ---
 
 # Distillation（少步蒸馏与 RL 后训练）

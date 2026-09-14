@@ -1,6 +1,6 @@
 ---
 name: knowledge-graph
-description: Mini reproduction of Z-Image's World Knowledge Topological Graph for concept-balanced sampling (paper §2.3: Wikipedia entities, PageRank pruning, visual generatability filtering, hierarchical tag augmentation, BM25 + hierarchy-weighted sampling). Use when building the concept graph, concept coverage analysis, or semantic-level data balancing.
+description: "Mini reproduction of Z-Image's World Knowledge Topological Graph for concept-balanced sampling (paper §2.3: Wikipedia entities, PageRank pruning, visual generatability filtering, hierarchical tag augmentation, BM25 + hierarchy-weighted sampling). Use when building the concept graph, concept coverage analysis, or semantic-level data balancing."
 ---
 
 # Knowledge Graph（世界知识拓扑图 mini）

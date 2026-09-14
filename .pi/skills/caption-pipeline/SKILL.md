@@ -1,6 +1,6 @@
 ---
 name: caption-pipeline
-description: Reproduction of Z-Image's multi-level captioning approach (paper §3 Z-Captioner: OCR-first CoT captioning, five caption types, world-knowledge conditioning, three-step difference captions) using public VLM substitutes. Use when building caption generation, caption mixing strategies, or editing-instruction synthesis.
+description: "Reproduction of Z-Image's multi-level captioning approach (paper §3 Z-Captioner: OCR-first CoT captioning, five caption types, world-knowledge conditioning, three-step difference captions) using public VLM substitutes. Use when building caption generation, caption mixing strategies, or editing-instruction synthesis."
 ---
 
 # Caption Pipeline（多级 caption 管线）

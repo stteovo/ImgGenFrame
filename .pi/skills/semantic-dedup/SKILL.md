@@ -1,6 +1,6 @@
 ---
 name: semantic-dedup
-description: Graph-based semantic deduplication following Z-Image's Cross-modal Vector Engine (paper §2.2: reformulation of SD3 dedup as k-NN proximity graph + community detection, replacing range_search with k-NN, Leiden algorithm; official scale 100-NN, 1B items on 8xH800 as reference only). Use when implementing embedding-based dedup, k-NN indexing, or cluster-based dataset pruning at mini scale.
+description: "Graph-based semantic deduplication following Z-Image's Cross-modal Vector Engine (paper §2.2: reformulation of SD3 dedup as k-NN proximity graph + community detection, replacing range_search with k-NN, Leiden algorithm; official scale 100-NN, 1B items on 8xH800 as reference only). Use when implementing embedding-based dedup, k-NN indexing, or cluster-based dataset pruning at mini scale."
 ---
 
 # Semantic Dedup（语义去重）
