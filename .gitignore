@@ -1,0 +1,139 @@
+# Z-Image
+ckpts/
+.isort.cfg
+.pre-commit-config.yaml
+*.DS_Store
+
+
+# Ignore generated images
+/*.png
+
+
+# Agent相关
+opencode.json
+
+
+# IDE相关
+# Cursor
+# 本地设置/状态（避免覆盖队友配置）
+.cursor/settings.json
+.cursor/keybindings.json
+.cursor/mcp.json
+.cursorignore
+.cursorindexingignore
+# 忽略 Cursor 的本地对话历史或缓存
+.cursor/*.history
+
+
+# 敏感信息
+.env
+.env.*
+*.pem
+*.key
+*.secret
+*.secrets
+
+
+# 操作系统生成文件
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+# Windows 自动生成的区域标识符（WSL 中会显形为带冒号的残留文件）
+*:Zone.Identifier
+*:Zone.Identifier:*
+
+
+# Node.js / JavaScript
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+dist/
+build/
+.next/
+.nuxt/
+.env
+.env.local
+.env.*.local
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+.venv/
+pip-log.txt
+pip-delete-this-directory.txt
+
+# Go
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+*.test
+*.out
+vendor/
+
+# Rust
+/target/
+**/*.rs.bk
+Cargo.lock
+
+# Java / Kotlin
+*.class
+*.jar
+*.war
+*.ear
+*.nar
+.gradle/
+build/
+!gradle-wrapper.jar
+!**/src/main/**/build/
+!**/src/test/**/build/
+
+# C / C++
+*.o
+*.obj
+*.exe
+*.out
+*.app
+*.dll
+*.so
+*.dylib
+*.lib
+*.a
+*.la
+*.lo
+*.deps/
+*.Plo
+*.P
+*.Po
+*.d
+*.idb
+*.pdb
+*.ilk
+*.msi
+*.map
+*.exp
+*.def
+*.res
+*.rc
+
+# 编译产物
+*.class
+*.exe
+*.out
+*.app
+
+
+# 工具缓存
+.ruff_cache/
