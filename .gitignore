@@ -5,8 +5,20 @@ ckpts/
 *.DS_Store
 
 
-# Ignore generated images
-/*.png
+# 忽略图片
+*.png
+*.jpg
+*.jpeg
+*.bmp
+*.gif
+
+# 忽略模型权重
+*.bin
+*.pth
+*.pt
+*.safetensors
+*.ckpt
+*.onnx
 
 
 # Agent相关

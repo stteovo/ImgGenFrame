@@ -1,0 +1,2 @@
+# 文档文件走 LFS
+*.pdf filter=lfs diff=lfs merge=lfs -text
