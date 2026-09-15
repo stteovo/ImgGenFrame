@@ -71,12 +71,15 @@ class PatchEmbed(nn.Module):
         self.proj = nn.Linear(f_patch_size * patch_size * patch_size * in_channels, dim, bias=True)
 
     def patchify(self, latent: torch.Tensor):
-        """latent [B, C, H, W] → [B, N, patch_dim]，返回 grid (H_t, W_t)。"""
+        """latent [B, C, H, W] → [B, N, patch_dim]，返回 grid (H_t, W_t)。
+
+        token 维度顺序为 [pH, pW, C]，与官方 `_patchify_image` 一致。
+        """
         B, C, H, W = latent.shape
         p = self.patch_size
         H_t, W_t = H // p, W // p
         x = latent.view(B, C, H_t, p, W_t, p)
-        x = x.permute(0, 2, 4, 1, 3, 5).reshape(B, H_t * W_t, C * p * p)
+        x = x.permute(0, 2, 4, 3, 5, 1).reshape(B, H_t * W_t, C * p * p)
         return x, (H_t, W_t)
 
     def forward(self, latent: torch.Tensor):

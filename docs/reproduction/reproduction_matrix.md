@@ -19,9 +19,9 @@
 
 | ID | Category | Component | Paper Claim | Paper Evidence | Official Code | Parameter | Our Implementation | Verification | Status |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| TOK-01 | Tokenization | VAE | 用 Flux VAE，选其重建质量；冻结 | §4.1, §4.2 | HF vae/config.json：`_name_or_path=flux-dev` | latent 16ch、8× 下采样 | 包装 diffusers AutoencoderKL，冻结 | 重建 PSNR；latent 统计 | ✅ |
-| TOK-02 | Tokenization | VAE 缩放常数 | 未说明 | — | HF config：scaling_factor=0.3611, shift_factor=0.1159；repo 遗留 0.18215 为死代码 | 0.3611 / 0.1159 | 用 checkpoint 值，禁用 0.18215 | 与官方 pipeline latent 逐值一致 | ✅ |
-| TOK-03 | Tokenization | 图像 patchify | 未明说 | — | all_patch_size=[2], all_f_patch_size=[1]；x_embedder=Linear(64→3840) | 2×2 空间 patch，1 帧 | 从零实现 patchify（第4步 PatchEmbed） | 形状 + 官方权重对齐 | ✅ |
+| TOK-01 | Tokenization | VAE | 用 Flux VAE，选其重建质量；冻结 | §4.1, §4.2 | HF vae/config.json：`_name_or_path=flux-dev` | latent 16ch、8× 下采样 | 包装 diffusers AutoencoderKL，冻结（第7步 image_tokenizer） | 重建 PSNR；latent 统计 | ✅ |
+| TOK-02 | Tokenization | VAE 缩放常数 | 未说明 | — | HF config：scaling_factor=0.3611, shift_factor=0.1159；repo 遗留 0.18215 为死代码 | 0.3611 / 0.1159 | 用 checkpoint 值，禁用 0.18215（第7步 latent_utils） | 与官方 pipeline latent 逐值一致 | ✅ |
+| TOK-03 | Tokenization | 图像 patchify | 未明说 | — | all_patch_size=[2], all_f_patch_size=[1]；x_embedder=Linear(64→3840) | 2×2 空间 patch，1 帧 | 从零实现 patchify（第4步 PatchEmbed + 第7步 patchifier，token 序 [pH,pW,C]） | 形状 + 官方权重对齐 | ✅ |
 | TOK-04 | Tokenization | text encoder | Qwen3-4B，双语能力；冻结 | §4.1, §4.2 | HF text_encoder/config.json：Qwen3ForCausalLM | hidden 2560、36 层、32/8 GQA、vocab 151936 | transformers 加载，冻结 | 特征分布探针 | ✅ |
 | TOK-05 | Tokenization | 文本截断长度 | 未说明 | — | 无 max length 配置；Qwen3 max_position=40960 | UNKNOWN | 标 [ASSUMPTION]（需读官方推理代码确认） | 与官方 pipeline 输出一致 | ❓ |
 | TOK-06 | Tokenization | 序列填充 | 未说明 | — | SEQ_MULTI_OF=32；各模态独立填充 + pad token + attention mask | 32 倍数 | 从零实现 | pad 行为测试 | ✅ |

@@ -50,3 +50,15 @@ def test_summarize_outputs_structure():
     assert "main layers" in s
     assert "total parameters" in s
     print("\n=== S3-DiT 模型结构 ===\n" + s)
+
+
+def test_patchify_unpatchify_roundtrip():
+    # 模型级 patchify（PatchEmbed）与 unpatchify（S3DiT）必须互为逆变换，
+    # token 维度顺序 [pH, pW, C] 与官方一致（回归防护：早前此处理不一致）
+    cfg = S3DiTConfig.tiny()
+    model = S3DiT(cfg)
+    latent = torch.randn(2, cfg.in_channels, 16, 16)
+    tokens, grid = model.x_embedder.patchify(latent)
+    assert tokens.shape == (2, 64, 64)
+    restored = model.unpatchify(tokens, grid)
+    assert torch.equal(restored, latent)
