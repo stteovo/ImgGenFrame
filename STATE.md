@@ -6,11 +6,11 @@
 按 `docs/prompts/` 文件名首数字顺序连续执行第 4–29 步（26 步）。每步：依据提示词文件 + 对应 skill + `docs/reproduction/` 完成实现/研究 → 运行验证 → 用 `[feat|fix] 主题\n\n<body>` 格式做一次 git 提交 → 学习报告 + 文档更新。不逐步停下等确认。
 
 ## Current Phase
-**第 18 步：测试 1B 模型**。已完成 14/26 步（第 4–17 步）。
+**第 19 步：FSDP2 分布式训练（单 GPU 正确后再上）**。已完成 15/26 步（第 4–18 步）。
 
 ## Completed
-- 第 4–17 步全部完成：S3-DiT、3D RoPE、Flow Matching、VAE Tokenization、Conditioning、最小 pipeline、100M 训练、导师回顾、Data Infra 骨架、Caption Pipeline、Semantic Dedup、Knowledge Graph、Data→Training 闭环、300M 显存/吞吐测试。
-- 184 项 pytest 通过；EXP-TRAIN-001（100M 过拟合：loss 2.34→0.25、重建 MSE 0.085）；300M（301.47M）前向/反向在 16GB 内（256² 2.5GB / 512² 9.1GB / 1024² 13.2GB）。
+- 第 4–18 步全部完成（核心架构/pipeline/100M 训练/数据基建四模块/300M 与 1B 显存测试）。
+- 184 项 pytest 通过；100M 过拟合（loss 2.34→0.25）；300M（301.47M）16GB 内（至 1024² 13.2GB）；1B（1.01B）fwd+bwd 3.85GB，fp32 AdamW 需 18GB→OOM，需 8bit optim + grad ckpt。
 
 ## In Progress
 无（第 16 步已提交 `8086dd2`）。
@@ -38,9 +38,9 @@
 ## Important Files
 - 事实库：`docs/reproduction/paper-facts.md`、`reproduction_matrix.md`、`open_questions.md`、`roadmap.md`、`data_mapping.md`、`milestone_01_s3dit.md`
 - 源码根：`src/zimage/`（models/ diffusion/ tokenization/ conditioning/ training/ data/ captioning/ pipeline.py）
-- 配置：`configs/tiny/{model,training,data}.yaml`、`configs/300m/model.yaml`
+- 配置：`configs/{tiny,300m,1b}/*.yaml`
 - 实验：`experiments/20260915-tiny-overfit/`、`experiments/scaling/{exp_100m,exp_300m}`
 - 报告/学习：`docs/reports/dedup_report.md`、`docs/learning/*.md`
 
 ## Next Step
-第 18 步：读 `docs/prompts/18-*.md` + distributed-training skill，测试 1B 模型（前向/反向显存、吞吐、显存预算表，论证 16GB 下需 grad ckpt / 8bit optim / offload 组合）。
+第 19 步：读 `docs/prompts/19-*.md` + distributed-training skill，实现 FSDP2（单 GPU 正确后再上），验证 sharding/同步/checkpoint/resume/数据分片。

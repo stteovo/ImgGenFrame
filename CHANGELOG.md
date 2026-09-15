@@ -3,6 +3,7 @@
 > 每步一条：commit + 一句话总结。详情见 `git log` 与 `docs/learning/`、`docs/reproduction/`。
 
 ## 2026-09-15
+- `b0c20fb` [feat] 第 17 步：测试 300M 模型（缩放基准，scale 升级出口满足）
 - `ac25e59` [feat] 建立 Agent 长期状态文件与上下文预算（STATE/TASK/CHANGELOG + compaction）
 - `8086dd2` [feat] 第 16 步：Data→Training 闭环（DatasetManifest 版本化 + checkpoint 记录 dataset_version）
 - `f42bddf` [feat] 第 15 步：Knowledge Graph（概念层级 + BM25 采样权重）
