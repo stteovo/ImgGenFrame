@@ -32,7 +32,7 @@
 | ID | Category | Component | Paper Claim | Paper Evidence | Official Code | Parameter | Our Implementation | Verification | Status |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | COND-01 | Conditioning | 时间嵌入 | 未明说 | — | diffusers TimestepEmbedder：正弦嵌入+MLP；t×T_SCALE | freq_size=256, max_period=10000, t_scale=1000, MLP mid=1024 | 从零实现（第4步 TimestepEmbedder） | 与 diffusers 逐值对齐 | ✅ |
-| COND-02 | Conditioning | 低秩 adaLN | 条件向量投影为 scale/gate；共享层无关 down-proj + 每层 up-proj | §4.1 | t_embedder 输出 256 = min(dim, ADALN_EMBED_DIM)（共享）；每层 `Linear(256→4·dim)`（层特定） | 256 → 4×3840 | 从零实现共享/每层结构 | 参数量断言 + 权重对齐 | ✅ |
+| COND-02 | Conditioning | 低秩 adaLN | 条件向量投影为 scale/gate；共享层无关 down-proj + 每层 up-proj | §4.1 | t_embedder 输出 256 = min(dim, ADALN_EMBED_DIM)（共享）；每层 `Linear(256→4·dim)`（层特定） | 256 → 4×3840 | 从零实现共享/每层结构（第8步测试锁定共享 down-proj + 每层 up-proj） | 参数量断言 + 权重对齐 | ✅ |
 | COND-03 | Conditioning | 文本条件路径 | 未明说 | — | cap_embedder=RMSNorm+Linear(2560→3840) 转 token 进流；**不经过 adaLN** | 2560→3840 | 按代码实现（第4步 CaptionEmbedder） | 数值对齐 | ✅ |
 | COND-04 | Conditioning | 编辑双条件 | 参考图 clean 与目标图 noisy 用不同 time-conditioning | §4.1 | t_noisy=t_embedder(t·1000)、t_clean=t_embedder(1·1000)，noise_mask 逐 token 选择 | t vs t=1 | 编辑阶段实现 | select_per_token 测试 | ⬜ |
 | COND-05 | Conditioning | FinalLayer | 未说明 | — | scale = 1.0 + adaLN_modulation(c)，作用于残差输出 | 1+mod | 按代码实现 | 数值对齐 | ✅ |
