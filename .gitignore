@@ -153,3 +153,5 @@ build/
 # Agent 运行时状态（目标账本/锁，非项目产物）
 .pi/goals/
 .pi/.goals-pool-snapshot.json
+# 生成的数据集/去重产物（二进制，不入库）
+*.parquet

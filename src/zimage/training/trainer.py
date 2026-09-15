@@ -29,6 +29,8 @@ class FlowMatchingTrainer:
         self.spec = spec
         self.device = torch.device(device)
         self.step = 0
+        self.dataset_version = spec.dataset_version
+        self.manifest_hash = ""
         self.optimizer = torch.optim.AdamW(
             model.parameters(),
             lr=spec.learning_rate,
@@ -78,11 +80,18 @@ class FlowMatchingTrainer:
     # ------------------------------------------------------------------
     # checkpoint
     # ------------------------------------------------------------------
+    def set_dataset_info(self, dataset_version: str, manifest_hash: str) -> None:
+        """把数据集版本写入训练器，随 checkpoint 保存（可追溯）。"""
+        self.dataset_version = dataset_version
+        self.manifest_hash = manifest_hash
+
     def state_dict(self) -> dict[str, Any]:
         return {
             "model": self.model.state_dict(),
             "optimizer": self.optimizer.state_dict(),
             "step": self.step,
+            "dataset_version": self.dataset_version,
+            "manifest_hash": self.manifest_hash,
             "rng_cpu": torch.random.get_rng_state(),
             "rng_cuda": torch.cuda.get_rng_state_all() if torch.cuda.is_available() else [],
             "training_spec": self.spec.__dict__,
@@ -98,6 +107,8 @@ class FlowMatchingTrainer:
         self.model.load_state_dict(ckpt["model"])
         self.optimizer.load_state_dict(ckpt["optimizer"])
         self.step = ckpt["step"]
+        self.dataset_version = ckpt.get("dataset_version", "unknown")
+        self.manifest_hash = ckpt.get("manifest_hash", "")
         torch.random.set_rng_state(ckpt["rng_cpu"])
         if ckpt.get("rng_cuda") and torch.cuda.is_available():
             torch.cuda.set_rng_state_all(ckpt["rng_cuda"])

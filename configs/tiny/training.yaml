@@ -12,3 +12,4 @@ precision: bf16          # bf16 | fp32
 timestep_sampling: logit_normal   # logit_normal | uniform
 logit_normal_std: 1.0    # [ASSUMPTION] σ=1.0（SD3 惯例，open_questions A7）
 seed: 42
+dataset_version: v001   # 数据集版本（与 manifest 绑定，可追溯到 checkpoint）

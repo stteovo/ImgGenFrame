@@ -30,6 +30,7 @@ class TrainingSpec:
     timestep_sampling: str = "logit_normal"  # logit_normal | uniform
     logit_normal_std: float = 1.0  # [ASSUMPTION] σ=1.0（open_questions A7）
     seed: int = 42
+    dataset_version: str = "v001"  # 数据集版本（与 manifest 绑定，可追溯）
 
 
 @dataclass(frozen=True)
@@ -87,6 +88,7 @@ def load_training_config(path: str | Path) -> TrainingSpec:
         timestep_sampling=raw.get("timestep_sampling", "logit_normal"),
         logit_normal_std=raw.get("logit_normal_std", 1.0),
         seed=raw.get("seed", 42),
+        dataset_version=raw.get("dataset_version", "v001"),
     )
 
 
