@@ -1,0 +1,7 @@
+# Z-Image-Tiny 数据配置（第一实验：极小合成 latent 数据集过拟合）
+resolution: 256          # 256×256 图 → latent 32×32 → 256 token
+latent_size: 32
+num_images: 16           # 8~32 张，目标：能过拟合
+text_len: 8              # mock 文本特征长度
+cap_feat_dim: 2560       # Qwen3-4B hidden（mock 特征维度对齐）
+latent_channels: 16      # Flux VAE latent 通道

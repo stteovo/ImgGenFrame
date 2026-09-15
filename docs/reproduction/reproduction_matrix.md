@@ -126,10 +126,10 @@
 
 | ID | Category | Component | Paper Claim | Paper Evidence | Official Code | Parameter | Our Implementation | Verification | Status |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| PRE-01 | Pretraining | low-res 阶段 | 256² 固定分辨率 T2I，>50% 预训练算力 | §4.3, Table 1 | 无训练代码 | 算力 147.5K H800h | 缩比复现（100M/300M） | loss 曲线 + 出像 | ✅ |
+| PRE-01 | Pretraining | low-res 阶段 | 256² 固定分辨率 T2I，>50% 预训练算力 | §4.3, Table 1 | 无训练代码 | 算力 147.5K H800h | 缩比复现（100M/300M；EXP-TRAIN-001 已过拟合 16 张） | loss 曲线 + 出像 | ✅ |
 | PRE-02 | Pretraining | 并行策略 | DiT 用 FSDP2；冻结 VAE/TE 用 DP；全层 grad ckpt；torch.compile | §4.2 | 无训练代码 | UNKNOWN（无 cluster 细节） | 单卡：grad ckpt + 显存优化 | 显存/吞吐实测 | ✅ |
-| PRE-03 | Pretraining | 优化器与调度 | 未说明 | — | 无 | UNKNOWN | 标 [ASSUMPTION]（参考 SD3/Flux 惯例并消融） | 消融实验 | ❓ |
-| PRE-04 | Pretraining | EMA / warmup / grad clip | 未说明 | — | 无 | UNKNOWN | 标 [ASSUMPTION] | 消融实验 | ❓ |
+| PRE-03 | Pretraining | 优化器与调度 | 未说明 | — | 无 | UNKNOWN | 标 [ASSUMPTION]（AdamW 1e-4 已用于 EXP-TRAIN-001，后续消融） | 消融实验 | ❓ |
+| PRE-04 | Pretraining | EMA / warmup / grad clip | 未说明 | — | 无 | UNKNOWN | 标 [ASSUMPTION]（无 EMA、grad_clip=1.0，EXP-TRAIN-001） | 消融实验 | ❓ |
 | PRE-05 | Pretraining | 序列长度感知组 batch | 按分辨率分组，减少 padding；长序列小 batch、短序列大 batch | §4.2 | 无 | UNKNOWN | 从零实现 | padding 率/吞吐对照 | ✅ |
 
 ## 15. Omni-pretraining

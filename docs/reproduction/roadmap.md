@@ -46,6 +46,12 @@
 3. 玩具/小型数据（如 MNIST/合成形状）端到端训练 100M。
 4. 实验记录全流程首次完整演练。
 
+进度：
+- [x] FM 训练（`src/zimage/diffusion/` + `training/`，1/10/100 冒烟通过）
+- [x] Euler ODE 采样器（CFG 逻辑留待训练循环接入）
+- [x] 合成 latent 端到端训练 100M（EXP-TRAIN-001：loss 2.34→0.25、重建 MSE 0.085）
+- [x] 实验记录全流程首次完整演练（record/environment/dataset/metrics/checkpoint）
+
 出口条件：loss 收敛、采样出可辨认图像；t 采样分布、shift 行为有直方图级验证；CFG 开/关行为符合预期。
 
 ## Stage 4 — M2（300M）+ 数据管线 v0 + 256² 真实数据

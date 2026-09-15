@@ -1,0 +1,14 @@
+# Z-Image-Tiny 训练配置
+# [ASSUMPTION] 论文未给训练超参（open_questions A1–A8），取 SD3/Flux 惯例，后续消融
+learning_rate: 1.0e-4
+weight_decay: 0.01
+betas: [0.9, 0.999]
+grad_clip: 1.0
+batch_size: 4
+max_steps: 2000
+log_interval: 10
+save_interval: 500
+precision: bf16          # bf16 | fp32
+timestep_sampling: logit_normal   # logit_normal | uniform
+logit_normal_std: 1.0    # [ASSUMPTION] σ=1.0（SD3 惯例，open_questions A7）
+seed: 42

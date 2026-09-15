@@ -1,0 +1,8 @@
+torch 2.14.0+cu130
+cuda 13.0
+cudnn 92400
+diffusers 0.40.0
+transformers 5.17.0
+python 3.13
+GPU: NVIDIA GeForce RTX 5070 Ti (16GB)
+platform: Linux / WSL2

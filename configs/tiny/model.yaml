@@ -1,0 +1,18 @@
+# Z-Image-Tiny 模型配置（约 100M 参数，M1 缩比梯子）
+# [IMPLEMENTATION] 缩比保持 head_dim=128 == sum(axes_dims)、ffn=dim*8/3
+hidden_size: 768
+depth: 8
+num_heads: 6
+ffn_dim: 2048
+qk_norm: true
+sandwich_norm: true
+norm_eps: 1.0e-5
+# [OFFICIAL-CKPT] RoPE 常数
+rope_theta: 256.0
+rope_axes_dims: [32, 48, 48]
+rope_axes_lens: [1536, 512, 512]
+# [OFFICIAL-CKPT] Flux VAE latent
+in_channels: 16
+patch_size: 2
+cap_feat_dim: 2560
+n_refiner_layers: 2
