@@ -60,19 +60,19 @@
 
 | ID | Category | Component | Paper Claim | Paper Evidence | Official Code | Parameter | Our Implementation | Verification | Status |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| FM-01 | Flow Matching | 插值路径 | x_t = t·x1 + (1−t)·x0 | §4.3 公式(1) | — | x0=噪声, x1=数据 | 从零实现 | 端点/闭式测试 | ✅ |
-| FM-02 | Flow Matching | 目标与损失 | v = x1 − x0，MSE | §4.3 公式(1) | — | velocity 预测 | 从零实现 | loss 初值量级测试 | ✅ |
+| FM-01 | Flow Matching | 插值路径 | x_t = t·x1 + (1−t)·x0 | §4.3 公式(1) | — | x0=噪声, x1=数据 | 从零实现（第6步 flow_matching.py） | 端点/闭式测试 | ✅ |
+| FM-02 | Flow Matching | 目标与损失 | v = x1 − x0，MSE | §4.3 公式(1) | — | velocity 预测 | 从零实现（第6步） | loss 初值量级测试 | ✅ |
 | FM-03 | Flow Matching | 损失权重 | 未说明 | — | 无 | UNKNOWN（默认恒 1） | 标 [IMPLEMENTATION] | ablation（可选） | ❓ |
-| FM-04 | Flow Matching | 预测类型 | velocity（v-prediction） | §4.3 | — | v-pred | 从零实现 | 与采样器自洽性 | ✅ |
+| FM-04 | Flow Matching | 预测类型 | velocity（v-prediction） | §4.3 | — | v-pred | 从零实现（第6步） | 与采样器自洽性 | ✅ |
 
 ## 7. Noise Sampling
 
 | ID | Category | Component | Paper Claim | Paper Evidence | Official Code | Parameter | Our Implementation | Verification | Status |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| NS-01 | Noise Sampling | 训练期 t 采样 | logit-normal（following SD3），集中在中间 t | §4.3 | 无参数 | UNKNOWN（σ 未给） | 标 [ASSUMPTION]（SD3 惯例 σ=1.0） | 分布直方图 + ablation | ❓ |
-| NS-02 | Noise Sampling | 动态 time shifting | Flux 式动态 shift 补偿多分辨率 SNR | §4.3 | diffusers calculate_shift：`m=(1.15−0.5)/(4096−256)`，shift=m·seq+b | base_seq=256, max_seq=4096, base_shift=0.5, max_shift=1.15 | 从零实现 | 与 diffusers 逐值对齐 | ✅ |
+| NS-01 | Noise Sampling | 训练期 t 采样 | logit-normal（following SD3），集中在中间 t | §4.3 | 无参数 | UNKNOWN（σ 未给） | 标 [ASSUMPTION]（SD3 惯例 σ=1.0，第6步已实现） | 分布直方图 + ablation | ❓ |
+| NS-02 | Noise Sampling | 动态 time shifting | Flux 式动态 shift 补偿多分辨率 SNR | §4.3 | diffusers calculate_shift：`m=(1.15−0.5)/(4096−256)`，shift=m·seq+b | base_seq=256, max_seq=4096, base_shift=0.5, max_shift=1.15 | 从零实现（第6步 timestep_sampling.py） | 与 diffusers 逐值对齐 | ✅ |
 | NS-03 | Noise Sampling | 推理 shift | 未说明 | — | 发布权重固定 shift：base=6.0、Turbo=3.0；use_dynamic_shifting=False | 6.0 / 3.0 | 推理用固定值；训练用动态 | 官方权重采样对齐 | ⚠️ |
-| NS-04 | Noise Sampling | 采样 sigma 表 | 未说明 | — | pipeline：linspace(1.0, 1/N, N)，N=步数 | σ ∈ [1, 1/N] | 从零实现 | 与 pipeline 对齐 | ✅ |
+| NS-04 | Noise Sampling | 采样 sigma 表 | 未说明 | — | pipeline：linspace(1.0, 1/N, N)，N=步数 | σ ∈ [1, 1/N] | 从零实现（第6步 scheduler.py） | 与 pipeline 对齐 | ✅ |
 
 ## 8. Resolution Curriculum
 
