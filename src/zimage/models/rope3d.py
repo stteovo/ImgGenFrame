@@ -130,3 +130,10 @@ class RopeEmbedder(nn.Module):
         freqs_cis = self._get_freqs_cis(ids.device)
         parts = [freqs_cis[i][ids[:, i].long()] for i in range(3)]
         return torch.cat(parts, dim=-1)
+
+    def embed_batched(self, ids: torch.Tensor) -> torch.Tensor:
+        """批处理位置 → 频率：[B, N, 3] → [B, N, head_dim/2] 复数。"""
+        if ids.ndim != 3 or ids.shape[-1] != 3:
+            raise ValueError(f"ids 必须为 [B, N, 3]，实际 {tuple(ids.shape)}")
+        B, N, _ = ids.shape
+        return self.forward(ids.reshape(B * N, 3)).view(B, N, -1)

@@ -122,8 +122,11 @@ class ConditioningAdapter(nn.Module):
 
         t_txt = text_tokens.shape[1] if text_tokens is not None else 0
 
+        # 位置 ID 必须与输入同设备（否则 RoPE 频率在 CPU、模型在 CUDA）
+        dev = text_tokens.device if text_tokens is not None else image_tokens.device
+
         # --- 位置 ID（按位置语义分配，再按拼接顺序 [image, text] 拼接） ---
-        text_pos = text_token_positions(t_txt) if t_txt > 0 else None  # [T_txt, 3]
+        text_pos = text_token_positions(t_txt, device=dev) if t_txt > 0 else None  # [T_txt, 3]
         image_pos = None
         image_grid = None
         image_mask = image.mask if image is not None else None
@@ -132,9 +135,9 @@ class ConditioningAdapter(nn.Module):
             p = self.patch_size
             H_t, W_t = h // p, w // p
             image_grid = (H_t, W_t)
-            image_pos = image_token_positions(H_t, W_t, t_offset=t_txt + 1)  # [N_img, 3]
+            image_pos = image_token_positions(H_t, W_t, t_offset=t_txt + 1, device=dev)  # [N_img, 3]
             if image_mask is None:
-                image_mask = torch.ones(1, H_t * W_t, dtype=torch.bool, device=image_tokens.device)
+                image_mask = torch.ones(1, H_t * W_t, dtype=torch.bool, device=dev)
 
         # --- modality_ids / position_ids（拼接顺序 [image, text]） ---
         modality_parts = []
