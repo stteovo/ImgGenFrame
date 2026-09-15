@@ -16,18 +16,7 @@ import torch.nn as nn
 import torch.nn.functional as F
 
 from .normalization import RMSNorm
-
-
-def apply_rotary_emb(x: torch.Tensor, freqs_cis: torch.Tensor) -> torch.Tensor:
-    """复数旋转（与官方 `apply_rotary_emb` 一致）。
-
-    x: [B, T, H, D]；freqs_cis: [B, T, D//2] 复数。返回与 x 同 dtype。
-    """
-    x_ = x.float().reshape(*x.shape[:-1], -1, 2)
-    x_ = torch.view_as_complex(x_)
-    freqs_cis = freqs_cis.unsqueeze(2)  # [B, T, 1, D//2]
-    out = torch.view_as_real(x_ * freqs_cis).flatten(3)
-    return out.type_as(x)
+from .rope3d import apply_rotary_emb
 
 
 class MultiHeadAttention(nn.Module):

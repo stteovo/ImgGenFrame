@@ -42,11 +42,11 @@
 
 | ID | Category | Component | Paper Claim | Paper Evidence | Official Code | Parameter | Our Implementation | Verification | Status |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| ROPE-01 | RoPE | 3D 统一 RoPE | 图像 token 沿空间维 (h,w)，文本沿时间维 | §4.1 | precompute_freqs_cis 每轴独立算复指数 | axes_dims=[32,48,48] | 从零实现 | 与 diffusers 逐值对齐 | ✅ |
-| ROPE-02 | RoPE | theta | 未说明 | — | rope_theta=256.0 | 256.0 | 从零实现 | 数值对齐 | ✅ |
-| ROPE-03 | RoPE | 轴长度 | 未说明 | — | axes_lens=[1536,512,512]（checkpoint）；diffusers 默认 [1024,512,512] | [1536,512,512] | 用 checkpoint 值 | 对齐测试 | ⚠️ |
+| ROPE-01 | RoPE | 3D 统一 RoPE | 图像 token 沿空间维 (h,w)，文本沿时间维 | §4.1 | precompute_freqs_cis 每轴独立算复指数 | axes_dims=[32,48,48] | 从零实现（第5步 rope3d.py） | 与 diffusers 逐值对齐 | ✅ |
+| ROPE-02 | RoPE | theta | 未说明 | — | rope_theta=256.0 | 256.0 | 从零实现（第5步） | 数值对齐 | ✅ |
+| ROPE-03 | RoPE | 轴长度 | 未说明 | — | axes_lens=[1536,512,512]（checkpoint）；diffusers 默认 [1024,512,512] | [1536,512,512] | 用 checkpoint 值（第5步） | 对齐测试 | ⚠️ |
 | ROPE-04 | RoPE | 文本/图像位置关系 | 编辑任务：参考与目标共享空间坐标、时间维错开 1 单位 | §4.1 | cap_pos 从 (0,0,0) 起；x_pos 时间维从 cap 末+1 起；siglip 位置缩放到图像分辨率 | t 偏移 = cap_len+1 | 编辑阶段实现 | 位置表断言测试 | ✅ |
-| ROPE-05 | RoPE | head_dim 约束 | 未明说 | — | `assert head_dim == sum(axes_dims)` | 128 = 32+48+48 | 缩比模型保持该约束 | 断言测试 | ✅ |
+| ROPE-05 | RoPE | head_dim 约束 | 未明说 | — | `assert head_dim == sum(axes_dims)` | 128 = 32+48+48 | 缩比模型保持该约束（config + rope3d 校验） | 断言测试 | ✅ |
 
 ## 5. Normalization
 
