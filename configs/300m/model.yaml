@@ -1,0 +1,18 @@
+# Z-Image-Small 模型配置（约 300M 参数，M2 缩比梯子）
+# [IMPLEMENTATION] 只改 scale（dim/depth），保持 head_dim=128、ffn=dim*8/3、同架构
+hidden_size: 1024
+depth: 18
+num_heads: 8
+ffn_dim: 2730
+qk_norm: true
+sandwich_norm: true
+norm_eps: 1.0e-5
+# [OFFICIAL-CKPT] RoPE 常数（不变）
+rope_theta: 256.0
+rope_axes_dims: [32, 48, 48]
+rope_axes_lens: [1536, 512, 512]
+# [OFFICIAL-CKPT] Flux VAE latent（不变）
+in_channels: 16
+patch_size: 2
+cap_feat_dim: 2560
+n_refiner_layers: 2

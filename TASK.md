@@ -20,8 +20,8 @@
 - [x] 第 15 步：Knowledge Graph（概念层级 + BM25 采样权重）
 - [x] 第 16 步：Data → Training 闭环（版本化 dataset 可追溯）
 
-## Phase 3 — 缩放与分布式（下一步开始）
-- [ ] 第 17 步：测试 300M 模型（Z-Image-Small）
+## Phase 3 — 缩放与分布式
+- [x] 第 17 步：测试 300M 模型（Z-Image-Small）
 - [ ] 第 18 步：测试 1B 模型
 - [ ] 第 19 步：FSDP2 分布式训练（单 GPU 正确后再上）
 
