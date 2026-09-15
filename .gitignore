@@ -149,3 +149,7 @@ build/
 
 # 工具缓存
 .ruff_cache/
+
+# Agent 运行时状态（目标账本/锁，非项目产物）
+.pi/goals/
+.pi/.goals-pool-snapshot.json

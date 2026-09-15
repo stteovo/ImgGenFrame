@@ -21,6 +21,7 @@
 | A12 | 预训练期 T2I:I2I 混合比 | 无数值（编辑 SFT 期 4:1 [PAPER §4.7]） | [ASSUMPTION] 待定 | 消融 | 待定 |
 | A13 | caption 各类目混合概率、原始 alt 混入概率 | "小概率"无数值 | [ASSUMPTION] 待定 | 消融 | 待定 |
 | A14 | SFT 变体数量与合并权重 αi | 无数值 | [ASSUMPTION] 小规模实验确定 | merging 消融 | 待定 |
+| A15 | 模型权重初始化方案 | 论文/官方推理代码均未指定自定义初始化 | [ASSUMPTION] PyTorch 默认初始化；官方 diffusers 亦无自定义 init | Stage 6 加载官方权重逐值对齐时反向校验 | 待定 |
 
 ## B. 歧义实现点（论文含糊，代码可查但需确认口径）
 
@@ -33,6 +34,9 @@
 | B5 | t_embedder 的 mid_size 语义 | 论文未说明 | mid_size=1024 为 MLP 中间维 [OFFICIAL-CODE] | 复刻时核对 |
 | B6 | "refiner" 的 layer-id 用途（0+/1000+/2000+） | 代码有 id 但作用不明 | 可能用于 PE 唯一性/adapter 挂载 | Stage 1 精读 |
 | B7 | cap_pad_token / x_pad_token 初始化为零 | 论文未说明 | 代码为 nn.Parameter(zeros) [OFFICIAL-CODE] | 缩比复刻保持一致 |
+| B8 | 第 4 步 RoPE 是否接线 | 位置编码属第 5 步独立模块 | [IMPLEMENTATION] 第 4 步 attention 仅保留 `freqs_cis` 注入点（None 时跳过） | 第 5 步实现并逐值对齐后接线 |
+| B9 | 第 4 步 patchify 实现形式 | 官方为 `Linear(patch_dim→dim)` | [IMPLEMENTATION] `PatchEmbed.proj = Linear`，与官方数学等价 | 已测试（test_embeddings.py） |
+| B10 | batch 内可变长序列（padding+mask） | 论文提序列长度感知组 batch | [IMPLEMENTATION] 第 4 步支持 batch 内等长；padding/组 batch 属训练阶段（第 22 步） | attention_mask 注入点已预留并测试 |
 
 ## C. 论文 vs 代码/权重 差异（已在 paper-facts §6 裁决）
 

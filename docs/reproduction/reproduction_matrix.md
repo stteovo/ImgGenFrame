@@ -7,7 +7,7 @@
 
 | ID | Category | Component | Paper Claim | Paper Evidence | Official Code | Parameter | Our Implementation | Verification | Status |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| ARCH-01 | Architecture | 单流 MM-DiT | text / visual semantic / VAE 三类 token 序列级拼接成统一输入流，无双流分支；早期融合、逐层密集跨模态交互 | §4.1, §1 | diffusers：基础模式 `[x, cap]`、omni `[cap, x, siglip]` | 拼接顺序与论文叙述不完全对应，以代码为准 | 缩比梯子实现统一单流 backbone | 权重加载对齐 + 序列顺序断言测试 | ⚠️ |
+| ARCH-01 | Architecture | 单流 MM-DiT | text / visual semantic / VAE 三类 token 序列级拼接成统一输入流，无双流分支；早期融合、逐层密集跨模态交互 | §4.1, §1 | diffusers：基础模式 `[x, cap]`、omni `[cap, x, siglip]` | 拼接顺序与论文叙述不完全对应，以代码为准 | 缩比梯子实现统一单流 backbone（第4步：src/zimage/models/） | 权重加载对齐 + 序列顺序断言测试 | ⚠️ |
 | ARCH-02 | Architecture | DiT 总参数 | 6.15B（仅 DiT，不含 Qwen3-4B 与 VAE） | Table 2 | — | 6.15B | 6B 级仅实例化+权重对齐，不训练 | 参数量统计脚本 vs 官方 checkpoint | ✅ |
 | ARCH-03 | Architecture | 层数 / hidden / FFN | 30 层 / 3840 / 10240 | Table 2 | HF config：n_layers=30, dim=3840 | 30 / 3840 / 10240 | 缩比时保持 dim:FFN≈1:2.67 | 与 HF config 逐项比对 | ✅ |
 | ARCH-04 | Architecture | attention heads | 论文写 32 | Table 2 | HF config n_heads=30；代码断言 head_dim==sum(axes_dims) | **30**（head_dim=128）| 使用 30 heads | `assert 3840/30 == 32+48+48` | ✅ |
@@ -21,7 +21,7 @@
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | TOK-01 | Tokenization | VAE | 用 Flux VAE，选其重建质量；冻结 | §4.1, §4.2 | HF vae/config.json：`_name_or_path=flux-dev` | latent 16ch、8× 下采样 | 包装 diffusers AutoencoderKL，冻结 | 重建 PSNR；latent 统计 | ✅ |
 | TOK-02 | Tokenization | VAE 缩放常数 | 未说明 | — | HF config：scaling_factor=0.3611, shift_factor=0.1159；repo 遗留 0.18215 为死代码 | 0.3611 / 0.1159 | 用 checkpoint 值，禁用 0.18215 | 与官方 pipeline latent 逐值一致 | ✅ |
-| TOK-03 | Tokenization | 图像 patchify | 未明说 | — | all_patch_size=[2], all_f_patch_size=[1]；x_embedder=Linear(64→3840) | 2×2 空间 patch，1 帧 | 从零实现 patchify | 形状 + 官方权重对齐 | ✅ |
+| TOK-03 | Tokenization | 图像 patchify | 未明说 | — | all_patch_size=[2], all_f_patch_size=[1]；x_embedder=Linear(64→3840) | 2×2 空间 patch，1 帧 | 从零实现 patchify（第4步 PatchEmbed） | 形状 + 官方权重对齐 | ✅ |
 | TOK-04 | Tokenization | text encoder | Qwen3-4B，双语能力；冻结 | §4.1, §4.2 | HF text_encoder/config.json：Qwen3ForCausalLM | hidden 2560、36 层、32/8 GQA、vocab 151936 | transformers 加载，冻结 | 特征分布探针 | ✅ |
 | TOK-05 | Tokenization | 文本截断长度 | 未说明 | — | 无 max length 配置；Qwen3 max_position=40960 | UNKNOWN | 标 [ASSUMPTION]（需读官方推理代码确认） | 与官方 pipeline 输出一致 | ❓ |
 | TOK-06 | Tokenization | 序列填充 | 未说明 | — | SEQ_MULTI_OF=32；各模态独立填充 + pad token + attention mask | 32 倍数 | 从零实现 | pad 行为测试 | ✅ |
@@ -31,9 +31,9 @@
 
 | ID | Category | Component | Paper Claim | Paper Evidence | Official Code | Parameter | Our Implementation | Verification | Status |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| COND-01 | Conditioning | 时间嵌入 | 未明说 | — | diffusers TimestepEmbedder：正弦嵌入+MLP；t×T_SCALE | freq_size=256, max_period=10000, t_scale=1000, MLP mid=1024 | 从零实现 | 与 diffusers 逐值对齐 | ✅ |
+| COND-01 | Conditioning | 时间嵌入 | 未明说 | — | diffusers TimestepEmbedder：正弦嵌入+MLP；t×T_SCALE | freq_size=256, max_period=10000, t_scale=1000, MLP mid=1024 | 从零实现（第4步 TimestepEmbedder） | 与 diffusers 逐值对齐 | ✅ |
 | COND-02 | Conditioning | 低秩 adaLN | 条件向量投影为 scale/gate；共享层无关 down-proj + 每层 up-proj | §4.1 | t_embedder 输出 256 = min(dim, ADALN_EMBED_DIM)（共享）；每层 `Linear(256→4·dim)`（层特定） | 256 → 4×3840 | 从零实现共享/每层结构 | 参数量断言 + 权重对齐 | ✅ |
-| COND-03 | Conditioning | 文本条件路径 | 未明说 | — | cap_embedder=RMSNorm+Linear(2560→3840) 转 token 进流；**不经过 adaLN** | 2560→3840 | 按代码实现 | 数值对齐 | ✅ |
+| COND-03 | Conditioning | 文本条件路径 | 未明说 | — | cap_embedder=RMSNorm+Linear(2560→3840) 转 token 进流；**不经过 adaLN** | 2560→3840 | 按代码实现（第4步 CaptionEmbedder） | 数值对齐 | ✅ |
 | COND-04 | Conditioning | 编辑双条件 | 参考图 clean 与目标图 noisy 用不同 time-conditioning | §4.1 | t_noisy=t_embedder(t·1000)、t_clean=t_embedder(1·1000)，noise_mask 逐 token 选择 | t vs t=1 | 编辑阶段实现 | select_per_token 测试 | ⬜ |
 | COND-05 | Conditioning | FinalLayer | 未说明 | — | scale = 1.0 + adaLN_modulation(c)，作用于残差输出 | 1+mod | 按代码实现 | 数值对齐 | ✅ |
 | COND-06 | Conditioning | CFG dropout（训练） | 未提及 | — | 无 | UNKNOWN | 标 [ASSUMPTION] 并消融 | ablation | ❓ |
@@ -52,9 +52,9 @@
 
 | ID | Category | Component | Paper Claim | Paper Evidence | Official Code | Parameter | Our Implementation | Verification | Status |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| NORM-01 | Normalization | RMSNorm | 所有归一化统一用 RMSNorm | §4.1 | RMSNorm(dim, eps=norm_eps) | eps=1e-5 | 从零实现 | 数学性质测试 | ✅ |
-| NORM-02 | Normalization | QK-Norm | 稳定注意力激活 | §4.1 | qk_norm="rms_norm"（对 Q、K 归一化） | RMSNorm, eps=1e-5 | 从零实现 | 数值对齐 | ✅ |
-| NORM-03 | Normalization | Sandwich-Norm | 约束每个 attention/FFN 块输入输出的信号幅度 | §4.1 | 每块 4 个 norm：attention_norm1/2、ffn_norm1/2 | 块内 2+2 | 从零实现 | 结构断言 + 对齐 | ✅ |
+| NORM-01 | Normalization | RMSNorm | 所有归一化统一用 RMSNorm | §4.1 | RMSNorm(dim, eps=norm_eps) | eps=1e-5 | 从零实现（第4步） | 数学性质测试（test_normalization.py） | ✅ |
+| NORM-02 | Normalization | QK-Norm | 稳定注意力激活 | §4.1 | qk_norm="rms_norm"（对 Q、K 归一化） | RMSNorm, eps=1e-5 | 从零实现（第4步） | 数值对齐 | ✅ |
+| NORM-03 | Normalization | Sandwich-Norm | 约束每个 attention/FFN 块输入输出的信号幅度 | §4.1 | 每块 4 个 norm：attention_norm1/2、ffn_norm1/2 | 块内 2+2 | 从零实现（第4步） | 结构断言 + 对齐 | ✅ |
 
 ## 6. Flow Matching
 
